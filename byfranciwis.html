@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ByFranciwis · Imanes para todo!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Caveat:wght@400;600;700&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange:     #E8872A;
+    --orange-dk:  #C96918;
+    --orange-lt:  #F5A84B;
+    --cream:      #FDF3E3;
+    --cream-dk:   #F0E0C0;
+    --brown:      #5C3A1E;
+    --brown-lt:   #8B5E3C;
+    --brown-xlt:  #C49A6C;
+    --white:      #FFFBF5;
+    --shadow:     rgba(92,58,30,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE overlay ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 40px;
+    background: rgba(253,243,227,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px dashed var(--brown-xlt);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo svg { width: 44px; height: 44px; }
+  .nav-logo span {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--brown);
+  }
+  .nav-logo small {
+    font-family: 'Caveat', cursive;
+    font-size: 0.85rem;
+    color: var(--orange-dk);
+    display: block;
+    line-height: 1;
+  }
+  nav a {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 600;
+    color: var(--brown);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color .2s;
+  }
+  nav a:hover { color: var(--orange); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 50px;
+    transition: background .2s, transform .15s !important;
+  }
+  .nav-cta:hover { background: var(--orange-dk) !important; transform: scale(1.04); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 70% 40%, #FDDBA8 0%, var(--cream) 60%);
+  }
+  .hero-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, var(--brown-xlt) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.18;
+  }
+  .hero-inner {
+    max-width: 1100px; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 60px;
+    position: relative; z-index: 1;
+  }
+  .hero-text { flex: 1; }
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--orange-dk);
+    background: var(--cream-dk);
+    border: 2px solid var(--orange-lt);
+    padding: 4px 16px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    transform: rotate(-1.5deg);
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    line-height: 1.1;
+    color: var(--brown);
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--orange);
+    position: relative;
+    display: inline-block;
+  }
+  .hero h1 em::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 2px; right: 0;
+    height: 6px;
+    background: var(--orange-lt);
+    border-radius: 4px;
+    z-index: -1;
+    opacity: 0.55;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--brown-lt);
+    margin-bottom: 36px;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--orange);
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 50px;
+    box-shadow: 0 4px 0 var(--orange-dk), 0 8px 24px rgba(232,135,42,0.3);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--orange-dk), 0 12px 30px rgba(232,135,42,0.35); }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--orange-dk); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--brown);
+    text-decoration: none;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 13px 24px;
+    border-radius: 50px;
+    border: 2px solid var(--brown-xlt);
+    transition: border-color .2s, color .2s;
+  }
+  .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* ─── HERO CAT ILLUSTRATION ─── */
+  .hero-visual {
+    flex: 0 0 400px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 8px 8px 0 var(--brown-xlt), 0 20px 60px var(--shadow);
+    transform: rotate(2deg);
+    position: relative;
+  }
+  .hero-card svg { width: 280px; height: 280px; display: block; }
+  .hero-card-tag {
+    position: absolute;
+    top: -14px; right: 20px;
+    background: var(--orange);
+    color: white;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    padding: 4px 16px;
+    border-radius: 50px;
+    transform: rotate(3deg);
+    box-shadow: 0 3px 0 var(--orange-dk);
+  }
+  .floating-magnet {
+    position: absolute;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--brown);
+    box-shadow: 4px 4px 0 var(--cream-dk), 0 8px 20px var(--shadow);
+    white-space: nowrap;
+  }
+  .fm1 { top: 10px; left: -70px; transform: rotate(-5deg); animation: float1 4s ease-in-out infinite; }
+  .fm2 { bottom: 30px; right: -80px; transform: rotate(4deg); animation: float2 5s ease-in-out infinite; }
+  .fm3 { bottom: -20px; left: -40px; transform: rotate(-2deg); animation: float1 4.5s ease-in-out infinite 1s; }
+
+  @keyframes float1 { 0%,100% { transform: rotate(-5deg) translateY(0); } 50% { transform: rotate(-5deg) translateY(-8px); } }
+  @keyframes float2 { 0%,100% { transform: rotate(4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-10px); } }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 90px 40px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--brown);
+    margin-bottom: 12px;
+  }
+  .section-sub {
+    color: var(--brown-lt);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 50px;
+  }
+
+  /* ─── PRODUCTOS ─── */
+  #productos { background: var(--white); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+  .product-card {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+    border: 2px solid var(--cream-dk);
+    transition: transform .2s, box-shadow .2s;
+    overflow: hidden;
+  }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange-lt), var(--orange), var(--orange-dk));
+    border-radius: 20px 20px 0 0;
+  }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px var(--shadow); }
+  .product-icon {
+    width: 64px; height: 64px;
+    background: var(--white);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+  .product-card h3 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--brown);
+    margin-bottom: 10px;
+  }
+  .product-card p {
+    font-size: 0.95rem;
+    color: var(--brown-lt);
+    line-height: 1.65;
+  }
+  .product-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--orange-dk);
+    background: rgba(232,135,42,0.12);
+    padding: 3px 12px;
+    border-radius: 50px;
+  }
+
+  /* ─── CÓMO FUNCIONA ─── */
+  #como { background: var(--cream); }
+  .steps {
+    display: flex;
+    gap: 0;
+    position: relative;
+    margin-top: 10px;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 40px; left: 40px; right: 40px;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--orange-lt) 0, var(--orange-lt) 12px, transparent 12px, transparent 22px);
+  }
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+  }
+  .step-num {
+    width: 80px; height: 80px;
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 0 var(--orange-dk), 0 8px 20px rgba(232,135,42,0.25);
+    position: relative; z-index: 1;
+    transition: transform .2s;
+  }
+  .step:hover .step-num { transform: scale(1.1) rotate(-5deg); }
+  .step h3 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+  .step p { font-size: 0.92rem; color: var(--brown-lt); line-height: 1.6; }
+
+  /* ─── SOBRE MÍ ─── */
+  #sobre {
+    background: var(--brown);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  #sobre::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(232,135,42,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .sobre-inner {
+    display: flex; gap: 70px; align-items: center;
+  }
+  .sobre-cat {
+    flex: 0 0 280px;
+    position: relative;
+  }
+  .sobre-cat svg {
+    width: 100%;
+    filter: drop-shadow(0 8px 30px rgba(0,0,0,0.3));
+  }
+  .sobre-text { flex: 1; }
+  .sobre-text .section-label { color: var(--orange-lt); }
+  .sobre-text .section-title { color: var(--cream); }
+  .sobre-text p {
+    color: rgba(253,243,227,0.8);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 16px;
+  }
+  .sobre-text strong { color: var(--orange-lt); }
+
+  /* ─── CONTACTO ─── */
+  #contacto { background: var(--white); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .contact-info h2 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--brown);
+    margin-bottom: 12px;
+  }
+  .contact-info p {
+    color: var(--brown-lt);
+    line-height: 1.7;
+    margin-bottom: 30px;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 14px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--brown);
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: border-color .2s, transform .15s;
+  }
+  .contact-link:hover { border-color: var(--orange); transform: translateX(4px); }
+  .contact-link-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .cl-wa { background: #DCF8C6; }
+  .cl-ig { background: linear-gradient(135deg, #F9CE34, #EE2A7B, #6228D7); }
+  .cl-em { background: #E3F2FD; }
+  .contact-link small { display: block; font-weight: 400; font-size: 0.82rem; color: var(--brown-lt); margin-top: 2px; }
+
+  /* Form */
+  .contact-form {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 36px;
+    border: 2px dashed var(--brown-xlt);
+  }
+  .contact-form h3 {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--brown);
+    margin-bottom: 24px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--brown);
+    margin-bottom: 6px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--cream-dk);
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    color: var(--brown);
+    background: var(--white);
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--orange); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .btn-send {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--orange-dk);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-send:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--orange-dk); }
+  .btn-send:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--orange-dk); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--brown);
+    color: rgba(253,243,227,0.7);
+    text-align: center;
+    padding: 30px 40px;
+    font-size: 0.9rem;
+  }
+  footer span { color: var(--orange-lt); font-family: 'Baloo 2', cursive; font-weight: 700; }
+
+  /* ─── WA FLOAT ─── */
+  .wa-float {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    z-index: 200;
+    width: 58px; height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    animation: pulse-wa 3s ease-in-out infinite;
+  }
+  .wa-float:hover { transform: scale(1.12); }
+  @keyframes pulse-wa {
+    0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+    50%      { box-shadow: 0 4px 30px rgba(37,211,102,0.7); }
+  }
+  .wa-float svg { width: 30px; height: 30px; }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 12px 20px; }
+    .nav-links { gap: 12px; }
+    nav a { font-size: 0.85rem; }
+    section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-inner { flex-direction: column; gap: 40px; }
+    .hero-visual { flex: none; width: 100%; }
+    .hero-card svg { width: 220px; height: 220px; }
+    .fm1, .fm2, .fm3 { display: none; }
+    .steps { flex-direction: column; gap: 30px; }
+    .steps::before { display: none; }
+    .sobre-inner { flex-direction: column; }
+    .sobre-cat { flex: none; max-width: 200px; margin: 0 auto; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" fill="#FDF3E3" stroke="#C49A6C" stroke-width="3"/>
+      <!-- Cat body -->
+      <ellipse cx="50" cy="62" rx="22" ry="20" fill="#E8872A"/>
+      <!-- Cat head -->
+      <circle cx="50" cy="42" r="18" fill="#E8872A"/>
+      <!-- Ears -->
+      <polygon points="36,30 30,14 44,24" fill="#E8872A"/>
+      <polygon points="64,30 70,14 56,24" fill="#E8872A"/>
+      <polygon points="37,28 32,17 43,25" fill="#F5A84B"/>
+      <polygon points="63,28 68,17 57,25" fill="#F5A84B"/>
+      <!-- Face -->
+      <ellipse cx="43" cy="41" rx="4" ry="5" fill="white"/>
+      <ellipse cx="57" cy="41" rx="4" ry="5" fill="white"/>
+      <circle cx="44" cy="42" r="2.5" fill="#3D2409"/>
+      <circle cx="58" cy="42" r="2.5" fill="#3D2409"/>
+      <ellipse cx="50" cy="48" rx="5" ry="3" fill="#F5A84B"/>
+      <path d="M46,48 Q50,52 54,48" stroke="#5C3A1E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Whiskers -->
+      <line x1="30" y1="46" x2="42" y2="48" stroke="#5C3A1E" stroke-width="1.2"/>
+      <line x1="30" y1="49" x2="42" y2="49" stroke="#5C3A1E" stroke-width="1.2"/>
+      <line x1="58" y1="48" x2="70" y2="46" stroke="#5C3A1E" stroke-width="1.2"/>
+      <line x1="58" y1="49" x2="70" y2="49" stroke="#5C3A1E" stroke-width="1.2"/>
+      <!-- Camera -->
+      <rect x="36" y="62" width="28" height="20" rx="4" fill="#5C3A1E"/>
+      <circle cx="50" cy="72" r="7" fill="#C49A6C"/>
+      <circle cx="50" cy="72" r="5" fill="#3D2409"/>
+      <circle cx="52" cy="70" r="1.5" fill="white" opacity="0.5"/>
+      <rect x="40" y="63" width="6" height="3" rx="1" fill="#C49A6C"/>
+    </svg>
+    <div>
+      <span>ByFranciwis</span>
+      <small>Imanes para todo!</small>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#productos">Productos</a>
+    <a href="#como">Cómo funciona</a>
+    <a href="#sobre">Yo</a>
+    <a href="#contacto" class="nav-cta">Pedir ahora ✨</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="hero-text reveal">
+      <div class="hero-badge">🧲 Hecho con amor desde Chile</div>
+      <h1>Tus fotos convertidas en<br><em>recuerdos mágicos</em></h1>
+      <p class="hero-sub">Imanes personalizados 5×5cm, con NFC, impresión 3D y mucho cariño. Lleva tus momentos favoritos a donde vayas. ✨</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/56941851702?text=Hola!%20Vi%20tu%20web%20y%20quiero%20pedir%20un%20im%C3%A1n%20%F0%9F%A7%B2" class="btn-primary" target="_blank">
+          💬 Pedir por WhatsApp
+        </a>
+        <a href="#productos" class="btn-secondary">Ver productos →</a>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="floating-magnet fm1">🧲 5×5cm</div>
+      <div class="floating-magnet fm2">✨ con NFC</div>
+      <div class="floating-magnet fm3">📦 envío a todo Chile</div>
+      <div class="hero-card">
+        <div class="hero-card-tag">¡Es mágico!</div>
+        <!-- Big cat illustration -->
+        <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background card -->
+          <rect x="10" y="10" width="260" height="260" rx="20" fill="#FDF3E3"/>
+          <!-- Magnets on background -->
+          <rect x="30" y="30" width="40" height="40" rx="8" fill="#E8872A" opacity="0.3"/>
+          <rect x="80" y="25" width="40" height="40" rx="8" fill="#F5A84B" opacity="0.25"/>
+          <rect x="160" y="30" width="40" height="40" rx="8" fill="#C96918" opacity="0.2"/>
+          <rect x="210" y="25" width="40" height="40" rx="8" fill="#E8872A" opacity="0.3"/>
+          <!-- Cat body -->
+          <ellipse cx="140" cy="185" rx="55" ry="50" fill="#E8872A"/>
+          <!-- Cat tail -->
+          <path d="M185,200 Q230,180 220,150 Q215,135 200,140" stroke="#C96918" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <!-- Cat head -->
+          <circle cx="140" cy="125" r="48" fill="#E8872A"/>
+          <!-- Stripes -->
+          <path d="M120,95 Q130,100 120,110" stroke="#C96918" stroke-width="3" fill="none" opacity="0.5"/>
+          <path d="M160,95 Q150,100 160,110" stroke="#C96918" stroke-width="3" fill="none" opacity="0.5"/>
+          <!-- Ears -->
+          <polygon points="100,95 88,62 118,82" fill="#E8872A"/>
+          <polygon points="180,95 192,62 162,82" fill="#E8872A"/>
+          <polygon points="102,90 93,67 115,81" fill="#F5A84B"/>
+          <polygon points="178,90 187,67 165,81" fill="#F5A84B"/>
+          <!-- Eyes -->
+          <ellipse cx="126" cy="122" rx="11" ry="13" fill="white"/>
+          <ellipse cx="154" cy="122" rx="11" ry="13" fill="white"/>
+          <circle cx="128" cy="124" r="7" fill="#3D2409"/>
+          <circle cx="156" cy="124" r="7" fill="#3D2409"/>
+          <circle cx="131" cy="121" r="2.5" fill="white"/>
+          <circle cx="159" cy="121" r="2.5" fill="white"/>
+          <!-- Nose + mouth -->
+          <ellipse cx="140" cy="135" rx="8" ry="5" fill="#F5A84B"/>
+          <path d="M134,136 Q140,143 146,136" stroke="#5C3A1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Whiskers -->
+          <line x1="95" y1="131" x2="130" y2="136" stroke="#5C3A1E" stroke-width="1.5" opacity="0.7"/>
+          <line x1="95" y1="137" x2="130" y2="137" stroke="#5C3A1E" stroke-width="1.5" opacity="0.7"/>
+          <line x1="150" y1="136" x2="185" y2="131" stroke="#5C3A1E" stroke-width="1.5" opacity="0.7"/>
+          <line x1="150" y1="137" x2="185" y2="137" stroke="#5C3A1E" stroke-width="1.5" opacity="0.7"/>
+          <!-- Paws holding magnet -->
+          <ellipse cx="108" cy="200" rx="22" ry="18" fill="#E8872A"/>
+          <ellipse cx="172" cy="200" rx="22" ry="18" fill="#E8872A"/>
+          <!-- Magnet being held -->
+          <rect x="115" y="185" width="50" height="50" rx="10" fill="white" stroke="#C49A6C" stroke-width="2"/>
+          <!-- Photo in magnet -->
+          <rect x="120" y="190" width="40" height="40" rx="6" fill="#F5A84B" opacity="0.5"/>
+          <circle cx="140" cy="210" r="12" fill="#C96918" opacity="0.4"/>
+          <text x="140" y="215" text-anchor="middle" font-size="14" fill="#5C3A1E">📷</text>
+          <!-- Sparkles -->
+          <text x="240" y="100" font-size="22">✨</text>
+          <text x="25" y="200" font-size="18">⭐</text>
+          <text x="50" y="250" font-size="14">✨</text>
+          <text x="230" y="240" font-size="16">⭐</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <div class="section-inner">
+    <div class="section-label reveal">🧲 Lo que hacemos</div>
+    <h2 class="section-title reveal">Productos con historia</h2>
+    <p class="section-sub reveal">Cada imán lleva un momento tuyo. Hechos a mano, con amor y mucha dedicación.</p>
+
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-icon">🧲</div>
+        <h3>Imanes personalizados</h3>
+        <p>Imanes de 5×5cm con tu foto favorita. Perfectos para el refrigerador, la oficina o regalar a quien quieras.</p>
+        <span class="product-tag">El clásico ❤️</span>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-icon">📲</div>
+        <h3>Imanes con NFC</h3>
+        <p>Un toque y ¡magia! Tus fotos, videos o mensajes en el celular de quien lo acerque. Tecnología + recuerdos.</p>
+        <span class="product-tag">¡Es magia! ✨</span>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-icon">🖨️</div>
+        <h3>Productos con impresión 3D</h3>
+        <p>Porta lápices giratorio con 4 espacios para fotos imán, marcos y mucho más. Escritorio con historia.</p>
+        <span class="product-tag">Nuevo 🌟</span>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-icon">🎁</div>
+        <h3>Cajas regalo especiales</h3>
+        <p>El detalle perfecto para Día del Padre, aniversarios, cumpleaños o simplemente porque sí. Con todo el amor.</p>
+        <span class="product-tag">Para regalar 🎀</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como">
+  <div class="section-inner">
+    <div class="section-label reveal">🪄 El proceso</div>
+    <h2 class="section-title reveal">¿Cómo funciona?</h2>
+    <p class="section-sub reveal">Es muy fácil. En pocos pasos tienes tu recuerdo en las manos.</p>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Escríbeme</h3>
+        <p>Contáctame por WhatsApp o Instagram. Te cuento todo sobre los productos y precios.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h3>Envía tu foto</h3>
+        <p>Mándame la imagen que quieras. La preparo para que quede perfecta en el imán.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h3>Lo hago con amor</h3>
+        <p>Imprimo, presiono y empaqueto tu pedido con todo el cuidado que merece.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <h3>¡Lo recibes!</h3>
+        <p>Envío a todo Chile o puedes retirarlo en Santiago. Tu recuerdo llega a casa. 🧲</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="section-inner">
+    <div class="sobre-inner">
+      <div class="sobre-cat reveal">
+        <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shadow -->
+          <ellipse cx="100" cy="250" rx="60" ry="10" fill="rgba(0,0,0,0.2)"/>
+          <!-- Body -->
+          <ellipse cx="100" cy="195" rx="52" ry="55" fill="#E8872A"/>
+          <!-- Arms -->
+          <ellipse cx="55" cy="195" rx="18" ry="12" fill="#E8872A" transform="rotate(-30 55 195)"/>
+          <ellipse cx="145" cy="195" rx="18" ry="12" fill="#E8872A" transform="rotate(30 145 195)"/>
+          <!-- Head -->
+          <circle cx="100" cy="115" r="52" fill="#E8872A"/>
+          <!-- Ears -->
+          <polygon points="72,80 60,48 88,72" fill="#E8872A"/>
+          <polygon points="128,80 140,48 112,72" fill="#E8872A"/>
+          <polygon points="74,76 65,54 86,70" fill="#F5A84B"/>
+          <polygon points="126,76 135,54 114,70" fill="#F5A84B"/>
+          <!-- Eyes closed/happy -->
+          <path d="M85,112 Q92,106 99,112" stroke="#3D2409" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M101,112 Q108,106 115,112" stroke="#3D2409" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="78" cy="122" rx="10" ry="6" fill="#F59B7A" opacity="0.5"/>
+          <ellipse cx="122" cy="122" rx="10" ry="6" fill="#F59B7A" opacity="0.5"/>
+          <!-- Nose + mouth -->
+          <ellipse cx="100" cy="126" rx="7" ry="4.5" fill="#F5A84B"/>
+          <path d="M95,127 Q100,133 105,127" stroke="#5C3A1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Whiskers -->
+          <line x1="62" y1="122" x2="91" y2="127" stroke="white" stroke-width="1.5" opacity="0.6"/>
+          <line x1="62" y1="128" x2="91" y2="128" stroke="white" stroke-width="1.5" opacity="0.6"/>
+          <line x1="109" y1="127" x2="138" y2="122" stroke="white" stroke-width="1.5" opacity="0.6"/>
+          <line x1="109" y1="128" x2="138" y2="128" stroke="white" stroke-width="1.5" opacity="0.6"/>
+          <!-- Holding camera -->
+          <rect x="72" y="185" width="56" height="44" rx="8" fill="#3D2409"/>
+          <circle cx="100" cy="207" r="14" fill="#5C3A1E"/>
+          <circle cx="100" cy="207" r="10" fill="#1a0f05"/>
+          <circle cx="104" cy="203" r="3" fill="white" opacity="0.4"/>
+          <rect x="78" y="186" width="12" height="6" rx="2" fill="#5C3A1E"/>
+          <!-- Flash -->
+          <text x="100" y="260" text-anchor="middle" font-size="20" fill="var(--orange-lt)">📸</text>
+        </svg>
+      </div>
+      <div class="sobre-text reveal">
+        <div class="section-label">🐱 Hola, soy Franciwis</div>
+        <h2 class="section-title">Emprendedora, creativa y amante de los recuerdos</h2>
+        <p>Creo imanes personalizados porque creo que <strong>cada foto tiene una historia que merece no quedarse en el teléfono</strong>. Empecé este proyecto con mucho cariño y hoy lo hago desde casa, con mis propias máquinas y todo el amor del mundo.</p>
+        <p>Cada pedido es único para mí. Me importa que cuando abras tu paquete, sientas que lo hice <strong>especialmente para ti</strong>. Porque así fue. 🧡</p>
+        <a href="https://www.instagram.com/byfranciwis.imanes" target="_blank" class="btn-primary" style="margin-top:10px; display:inline-flex;">
+          📷 Ver mi Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-inner">
+    <div class="section-label reveal">💌 Conversemos</div>
+    <h2 class="section-title reveal">¿Lista/o para pedir tu imán?</h2>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>Escríbeme por donde más te acomode. Respondo rápido y con mucho gusto. 🧡</p>
+        <div class="contact-links">
+          <a href="https://wa.me/56941851702?text=Hola!%20Quiero%20pedir%20un%20im%C3%A1n%20%F0%9F%A7%B2" target="_blank" class="contact-link">
+            <div class="contact-link-icon cl-wa">💬</div>
+            <div>
+              <strong>WhatsApp</strong>
+              <small>+56 9 4185 1702 · Respondo al tiro</small>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/byfranciwis.imanes" target="_blank" class="contact-link">
+            <div class="contact-link-icon cl-ig">📷</div>
+            <div>
+              <strong>Instagram</strong>
+              <small>@byfranciwis.imanes</small>
+            </div>
+          </a>
+          <a href="mailto:imanes@byfranciwis.cl" class="contact-link">
+            <div class="contact-link-icon cl-em">📧</div>
+            <div>
+              <strong>Email</strong>
+              <small>imanes@byfranciwis.cl</small>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <h3>📋 Cuéntame lo que necesitas</h3>
+        <form onsubmit="sendForm(event)">
+          <div class="form-group">
+            <label>Tu nombre</label>
+            <input type="text" id="fname" placeholder="¿Cómo te llamas?" required>
+          </div>
+          <div class="form-group">
+            <label>¿Qué producto te interesa?</label>
+            <select id="fproduct">
+              <option value="">Selecciona uno...</option>
+              <option>Imán personalizado 5×5cm</option>
+              <option>Imán con NFC</option>
+              <option>Producto con impresión 3D</option>
+              <option>Caja regalo</option>
+              <option>Tengo una idea especial 💡</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tu mensaje</label>
+            <textarea id="fmsg" placeholder="Cuéntame lo que necesitas, cuántos quieres, para qué ocasión..."></textarea>
+          </div>
+          <button type="submit" class="btn-send">✨ Enviar por WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Hecho con 🧡 por <span>ByFranciwis</span> · Imanes para todo! · Santiago, Chile</p>
+  <p style="margin-top:6px;font-size:0.82rem;">© 2025 byfranciwis.imanes · <a href="https://www.instagram.com/byfranciwis.imanes" target="_blank" style="color:inherit">Instagram</a></p>
+</footer>
+
+<!-- WhatsApp floating -->
+<a href="https://wa.me/56941851702?text=Hola!%20Quiero%20pedir%20un%20im%C3%A1n%20%F0%9F%A7%B2" target="_blank" class="wa-float" title="Escríbeme por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Form → WhatsApp
+function sendForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('fname').value;
+  const product = document.getElementById('fproduct').value;
+  const msg = document.getElementById('fmsg').value;
+  const text = `Hola Franciwis! 🧲\n\nMi nombre es ${name}.\nMe interesa: ${product || 'un producto'}.\n${msg ? '\n' + msg : ''}`;
+  window.open('https://wa.me/56941851702?text=' + encodeURIComponent(text), '_blank');
+}
+</script>
+</body>
+</html>
